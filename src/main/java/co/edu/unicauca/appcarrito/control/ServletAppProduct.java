@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,7 +68,7 @@ public class ServletAppProduct extends HttpServlet {
                     addProduct(request, response);
                     break;
                 case "/newProduct":
-                    showNewForm(request, response);
+                    showNewFormProduct(request, response);
                     break;
                 case "/insertProduct":
                     createProduct(request, response);
@@ -76,7 +77,7 @@ public class ServletAppProduct extends HttpServlet {
                     deleteProduct(request, response);
                     break;
                 case "/editProduct":
-                    showEditForm(request, response);
+                    showEditFormProduct(request, response);
                     break;
                 case "/updateProduct":
                     updateProduct(request, response);
@@ -94,7 +95,7 @@ public class ServletAppProduct extends HttpServlet {
                     deleteUser(request, response);
                     break;
                 case "/editUser":
-                    showEditForm(request, response);
+                    showEditFormUser(request, response);
                     break;
                 case "/updateUser":
                     updateUser(request, response);
@@ -103,16 +104,16 @@ public class ServletAppProduct extends HttpServlet {
                     readCar(request, response);
                     break;
                 case "/newCar":
-                    showNewForm(request, response);
+                    //showNewFormCar(request, response);
                     break;
                 case "/insertCar":
-                    createProduct(request, response);
+                    //createProduct(request, response);
                     break;
                 case "/deleteCar":
                     deleteCar(request, response);
                     break;
                 case "/editCar":
-                    showEditForm(request, response);
+                    //showEditFormCar(request, response);
                     break;
                 case "/updateCar":
                     updateProduct(request, response);
@@ -171,8 +172,9 @@ public class ServletAppProduct extends HttpServlet {
         producto.setCodigo(codigo);
         producto.setNombre(name);
         producto.setPrecio(precio);
-        producto.setCarritoList(null);
-        producto.setCarritoList(carJPA.findCarritoEntities());
+        //si se pasan la lista de carrito normal, sera reescrita.
+        List carrito = new ArrayList<Carrito>();
+        producto.setCarritoList(carrito);
         try{
             productJPA.edit(producto);
         }catch(Exception e){
@@ -197,25 +199,26 @@ public class ServletAppProduct extends HttpServlet {
         }
         response.sendRedirect("list");
     }
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+    
+    private void showNewFormProduct(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
         RequestDispatcher dispatcher = request.getRequestDispatcher("form-product.jsp");
         dispatcher.forward(request, response);
     }
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+    
+    private void showEditFormProduct(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
         int codigo = Integer.parseInt(request.getParameter("codigo"));
-        Usuario usuario = userJPA.findUsuario(codigo);
+        Producto producto = productJPA.findProducto(codigo);
         RequestDispatcher dispatcher = null;
-        if( usuario != null){
-            dispatcher = request.getRequestDispatcher("usuario-form-edit.jsp");
-            request.setAttribute("usuario", usuario);
+        if( producto != null){
+            dispatcher = request.getRequestDispatcher("product-form-edit.jsp");
+            request.setAttribute("producto", producto);
         }else{
-            dispatcher = request.getRequestDispatcher("list-usuario.jsp");
+            dispatcher = request.getRequestDispatcher("list-product.jsp");
         }
         dispatcher.forward(request, response);
     }
-    
     //
     private void createUser(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
@@ -254,7 +257,8 @@ public class ServletAppProduct extends HttpServlet {
         usuario.setUsuario(user);
         usuario.setClave(clave);
         usuario.setRol(rol);
-        usuario.setCarritoList(carJPA.findCarritoEntities());
+        List carrito = new ArrayList<Carrito>();
+        usuario.setCarritoList(carrito);
         System.out.println(usuario.getId());
         System.out.println(usuario.getNombre());
         System.out.println(usuario.getUsuario());
@@ -267,6 +271,7 @@ public class ServletAppProduct extends HttpServlet {
         }
         response.sendRedirect("listUser");
     }
+    
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
         int id = Integer.parseInt(request.getParameter("codigo"));
@@ -283,24 +288,27 @@ public class ServletAppProduct extends HttpServlet {
         }
         response.sendRedirect("listUser");
     }
+    
     private void showNewFormUser(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
         RequestDispatcher dispatcher = request.getRequestDispatcher("form-user.jsp");
         dispatcher.forward(request, response);
     }
+    
     private void showEditFormUser(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
         int codigo = Integer.parseInt(request.getParameter("codigo"));
-        Producto producto = productJPA.findProducto(codigo);
+        Usuario usuario = userJPA.findUsuario(codigo);
         RequestDispatcher dispatcher = null;
-        if( producto != null){
-            dispatcher = request.getRequestDispatcher("product-form-edit.jsp");
-            request.setAttribute("producto", producto);
+        if( usuario != null){
+            dispatcher = request.getRequestDispatcher("usuario-form-edit.jsp");
+            request.setAttribute("usuario", usuario);
         }else{
-            dispatcher = request.getRequestDispatcher("list-product.jsp");
+            dispatcher = request.getRequestDispatcher("list-usuario.jsp");
         }
         dispatcher.forward(request, response);
     }
+    
     
     private void readCar(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{

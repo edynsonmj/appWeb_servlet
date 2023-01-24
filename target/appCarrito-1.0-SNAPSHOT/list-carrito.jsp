@@ -12,10 +12,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
+    <body style="background-color: #3B3D3D">
         <jsp:include page="nav-admin.jsp" />
         <div class="container mt-3">
-            <h4 class="text-center">Carrito</h4>
+            <h4 class="text-center text-white">Carrito</h4>
             <table class="table table-sm table-dark table-striped table-hover mt-1">
                 <thead>
                     <th>id</th>

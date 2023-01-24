@@ -14,12 +14,12 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     </head>
-    <body class="bg-secondary">
+    <body style="background-color: #3B3D3D">
         <jsp:include page="nav-admin.jsp" />
         <!--barra de navegacion fin-->
         <div class="container mt-3">
-            <h4 class="text-center">Catalogo de productos</h4>
-            <a href="<%=request.getContextPath()%>/newProduct" class="btn btn-outline-dark">Nuevo producto</a>
+            <h4 class="text-center text-white">Catalogo de productos</h4>
+            <a href="<%=request.getContextPath()%>/newProduct" class="btn btn-outline-light">Nuevo producto</a>
             <table class="table table-sm table-dark table-striped table-hover mt-1">
                 <thead>
                 <th>codigo</th>

@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body class="bg-secondary">
+    <body style="background-color: #3B3D3D">
         <jsp:include page="nav-admin.jsp" />
         <div class="container mt-3 col-md-4">
             <div class="card text-bg-dark">
