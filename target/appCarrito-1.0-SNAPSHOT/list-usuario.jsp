@@ -19,10 +19,11 @@
             <a href="<%=request.getContextPath()%>/newUser" class="btn btn-outline-dark">Nuevo usuario</a>
             <table class="table table-sm table-dark table-striped table-hover mt-1">
                 <thead>
-                    <th>id</th>
-                    <th>nombre</th>
-                    <th>usuario</th>
-                    <th>clave</th>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th>Clave</th>
+                    <th>Rol</th>
                     <th>acciones</th>
                 </thead>
                 <tbody>
@@ -41,8 +42,11 @@
                                 <c:out value="${usuario.getClave()}" />
                             </td>
                             <td>
-                                <a href="edit?codigo=<c:out value='${usuario.id}'/>" class="btn btn-outline-success">Editar</a>
-                                <a href="delete?codigo=<c:out value='${usaurio.id}' />" class="btn btn-outline-danger">Eliminar</a>
+                                <c:out value="${usuario.getRol()}" />
+                            </td>
+                            <td>
+                                <a href="editUser?codigo=<c:out value='${usuario.getId()}'/>" class="btn btn-outline-success">Editar</a>
+                                <a href="deleteUser?codigo=<c:out value='${usuario.getId()}' />" class="btn btn-outline-danger">Eliminar</a>
                             </td>
                         </tr>
                     </c:forEach>

@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body text-center">
                     <h6> "${mensaje}" </h6>
-                    <a href="<%=request.getContextPath()%>/" class="btn btn-outline-success">Volver</a>
+                    <a href="<%=request.getContextPath()%>/${ruta}" class="btn btn-outline-success">Volver</a>
                 </div>
             </div>
         </div>

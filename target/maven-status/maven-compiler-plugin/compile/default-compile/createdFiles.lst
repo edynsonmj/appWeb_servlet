@@ -10,5 +10,4 @@ co\edu\unicauca\appcarrito\persistence\jpa\UsuarioJpaController.class
 co\edu\unicauca\appcarrito\persistence\entities\Usuario_.class
 co\edu\unicauca\appcarrito\persistence\entities\Producto_.class
 co\edu\unicauca\appcarrito\persistence\jpa\exceptions\NonexistentEntityException.class
-co\edu\unicauca\appcarrito\control\ServletAppUsuario.class
 co\edu\unicauca\appcarrito\persistence\entities\Carrito.class

@@ -88,7 +88,7 @@ public class ServletAppProduct extends HttpServlet {
                     createUser(request, response);
                     break;
                 case "/deleteUser":
-                    deleteProduct(request, response);
+                    deleteUser(request, response);
                     break;
                 case "/editUser":
                     showEditForm(request, response);
@@ -163,6 +163,7 @@ public class ServletAppProduct extends HttpServlet {
         }
         response.sendRedirect("list");
     }
+    
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
         int id = Integer.parseInt(request.getParameter("codigo"));
@@ -172,6 +173,8 @@ public class ServletAppProduct extends HttpServlet {
             System.out.println("llave foranea");
             RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
             String mensaje = "no puedes eliminar el producto, se encuentra en uso por almenos un usuario";
+            String ruta = "list";
+            request.setAttribute("ruta", ruta);
             request.setAttribute("mensaje", mensaje);
             dispatcher.forward(request, response);
         }
@@ -202,10 +205,13 @@ public class ServletAppProduct extends HttpServlet {
         String name = request.getParameter("name");
         String user = request.getParameter("user");
         String pass = request.getParameter("pass");
+        String rol = request.getParameter("rol");
         Usuario usuario = new Usuario();
         usuario.setNombre(name);
         usuario.setUsuario(user);
         usuario.setClave(pass);
+        usuario.setRol(rol);
+        userJPA.create(usuario);
         response.sendRedirect("listUser");
     }
     
@@ -239,15 +245,17 @@ public class ServletAppProduct extends HttpServlet {
     throws ServletException, IOException{
         int id = Integer.parseInt(request.getParameter("codigo"));
         try{
-            productJPA.destroy(id);
+            userJPA.destroy(id);
         }catch(Exception e){
             System.out.println("llave foranea");
             RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
-            String mensaje = "no puedes eliminar el producto, se encuentra en uso por almenos un usuario";
+            String mensaje = "no puedes eliminar el usuario, se encuentra en uso";
             request.setAttribute("mensaje", mensaje);
+            String ruta = "listUser";
+            request.setAttribute("ruta", ruta);
             dispatcher.forward(request, response);
         }
-        response.sendRedirect("list");
+        response.sendRedirect("listUser");
     }
     private void showNewFormUser(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{

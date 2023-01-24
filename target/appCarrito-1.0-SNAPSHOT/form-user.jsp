@@ -20,19 +20,24 @@
                 </div>
                 <div class="card-body">
                     <form action="<%=request.getContextPath()%>/insertUser" method="post">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="nombre" name="name" required="required">
-                        <label for="floatingInput" class="text-dark">Nombre</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="usuario" name="user" required="required">
-                        <label for="floatingInput" class="text-dark">Usuario</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="clave" name="pass" required="required">
-                        <label for="floatingInput" class="text-dark">Clave</label>
-                    </div>
-                    <button type="submit" class="btn btn-outline-success">Guardar</button>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="nombre" name="name" required="required">
+                            <label for="floatingInput" class="text-dark">Nombre</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="usuario" name="user" required="required">
+                            <label for="floatingInput" class="text-dark">Usuario</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="clave" name="pass" required="required">
+                            <label for="floatingInput" class="text-dark">Clave</label>
+                        </div>
+                        <select class="form-select mb-3" name="rol">
+                            <option selected>Selecciona un rol</option>
+                            <option value="no-admin">no-admin</option>
+                            <option value="admin">admin</option>
+                        </select>
+                        <button type="submit" class="btn btn-outline-success">Guardar</button>
                     </form>
                 </div>
             </div>
