@@ -63,6 +63,9 @@ public class ServletAppProduct extends HttpServlet {
         String action = request.getServletPath();
         try{
             switch(action){
+                case "/addProduct":
+                    addProduct(request, response);
+                    break;
                 case "/newProduct":
                     showNewForm(request, response);
                     break;
@@ -94,7 +97,7 @@ public class ServletAppProduct extends HttpServlet {
                     showEditForm(request, response);
                     break;
                 case "/updateUser":
-                    updateProduct(request, response);
+                    updateUser(request, response);
                     break;
                 case "/listCar":
                     readCar(request, response);
@@ -106,7 +109,7 @@ public class ServletAppProduct extends HttpServlet {
                     createProduct(request, response);
                     break;
                 case "/deleteCar":
-                    deleteProduct(request, response);
+                    deleteCar(request, response);
                     break;
                 case "/editCar":
                     showEditForm(request, response);
@@ -122,6 +125,20 @@ public class ServletAppProduct extends HttpServlet {
         catch(Exception e){
             throw new ServletException(e);
         }
+    }
+    
+    private void addProduct(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        int codigo = Integer.parseInt(request.getParameter("codigo"));
+        Producto producto = new Producto();
+        producto.setCodigo(codigo);
+        Usuario usuario = new Usuario();
+        usuario.setId(6);
+        Carrito car = new Carrito();
+        car.setIdProducto(producto);
+        car.setIdUsuario(usuario);
+        carJPA.create(car);
+        response.sendRedirect("list");
     }
     
     private void createProduct(HttpServletRequest request, HttpServletResponse response)
@@ -155,7 +172,7 @@ public class ServletAppProduct extends HttpServlet {
         producto.setNombre(name);
         producto.setPrecio(precio);
         producto.setCarritoList(null);
-        System.out.println(producto.getCodigo());
+        producto.setCarritoList(carJPA.findCarritoEntities());
         try{
             productJPA.edit(producto);
         }catch(Exception e){
@@ -188,13 +205,13 @@ public class ServletAppProduct extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
         int codigo = Integer.parseInt(request.getParameter("codigo"));
-        Producto producto = productJPA.findProducto(codigo);
+        Usuario usuario = userJPA.findUsuario(codigo);
         RequestDispatcher dispatcher = null;
-        if( producto != null){
-            dispatcher = request.getRequestDispatcher("product-form-edit.jsp");
-            request.setAttribute("producto", producto);
+        if( usuario != null){
+            dispatcher = request.getRequestDispatcher("usuario-form-edit.jsp");
+            request.setAttribute("usuario", usuario);
         }else{
-            dispatcher = request.getRequestDispatcher("list-product.jsp");
+            dispatcher = request.getRequestDispatcher("list-usuario.jsp");
         }
         dispatcher.forward(request, response);
     }
@@ -225,21 +242,30 @@ public class ServletAppProduct extends HttpServlet {
     
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
-        int codigo = Integer.parseInt(request.getParameter("codigo"));
+        int codigo = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
-        BigDecimal precio = new BigDecimal(request.getParameter("price"));
-        Producto producto = new Producto();
-        producto.setCodigo(codigo);
-        producto.setNombre(name);
-        producto.setPrecio(precio);
-        producto.setCarritoList(null);
-        System.out.println(producto.getCodigo());
+        String user = request.getParameter("user");
+        String clave = request.getParameter("pass");
+        String rol = request.getParameter("rol");
+        String esAdmin = request.getParameter("esAdmin");
+        Usuario usuario = new Usuario();
+        usuario.setId(codigo);
+        usuario.setNombre(name);
+        usuario.setUsuario(user);
+        usuario.setClave(clave);
+        usuario.setRol(rol);
+        usuario.setCarritoList(carJPA.findCarritoEntities());
+        System.out.println(usuario.getId());
+        System.out.println(usuario.getNombre());
+        System.out.println(usuario.getUsuario());
+        System.out.println(usuario.getClave());
+        System.out.println(usuario.getRol());
         try{
-            productJPA.edit(producto);
+            userJPA.edit(usuario);
         }catch(Exception e){
             Logger.getLogger(ServletAppProduct.class.getName()).log(Level.ALL.SEVERE, null, e);
         }
-        response.sendRedirect("list");
+        response.sendRedirect("listUser");
     }
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
@@ -282,6 +308,22 @@ public class ServletAppProduct extends HttpServlet {
         request.setAttribute("listCar", listaCarrito);
         RequestDispatcher dispatcher = request.getRequestDispatcher("list-carrito.jsp");
         dispatcher.forward(request, response);
+    }
+    
+    private void deleteCar(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        int id = Integer.parseInt(request.getParameter("codigo"));
+        try{
+            carJPA.destroy(id);
+        }catch(Exception e){
+            RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
+            String mensaje = "no puedes eliminar el producto del carrito, el elemento esta siendo usado en otra referencia";
+            request.setAttribute("mensaje", mensaje);
+            String ruta = "listCar";
+            request.setAttribute("ruta", ruta);
+            dispatcher.forward(request, response);
+        }
+        response.sendRedirect("listCar");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

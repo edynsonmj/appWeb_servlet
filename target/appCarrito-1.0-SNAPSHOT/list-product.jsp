@@ -44,6 +44,7 @@
                             <td>
                                 <a href="editProduct?codigo=<c:out value='${producto.codigo}'/>" class="btn btn-outline-success">Editar</a>
                                 <a href="deleteProduct?codigo=<c:out value='${producto.codigo}' />" class="btn btn-outline-danger">Eliminar</a>
+                                <a href="addProduct?codigo=<c:out value='${producto.codigo}' />" class="btn btn-outline-info">Add carrito</a>
                             </td>
                         </tr> 
                     </c:forEach>

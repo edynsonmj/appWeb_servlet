@@ -15,8 +15,7 @@
     <body>
         <jsp:include page="nav-admin.jsp" />
         <div class="container mt-3">
-            <h4 class="text-center">Lista de productos</h4>
-            <a href="<%=request.getContextPath()%>/usuario/new" class="btn btn-outline-dark">Nuevo usuario</a>
+            <h4 class="text-center">Carrito</h4>
             <table class="table table-sm table-dark table-striped table-hover mt-1">
                 <thead>
                     <th>id</th>
@@ -37,8 +36,7 @@
                                 ${car.getIdUsuario().getId()}
                             </td>
                             <td>
-                                <a href="editProduct?codigo=<c:out value='${producto.codigo}'/>" class="btn btn-outline-success">Editar</a>
-                                <a href="deleteProduct?codigo=<c:out value='${producto.codigo}' />" class="btn btn-outline-danger">Eliminar</a>
+                                <a href="deleteCar?codigo=<c:out value='${car.id}' />" class="btn btn-outline-danger">Eliminar</a>
                             </td>
                         </tr>
                     </c:forEach>
