@@ -8,8 +8,11 @@ import co.edu.unicauca.appcarrito.persistence.jpa.ProductoJpaController;
 import co.edu.unicauca.appcarrito.persistence.entities.Producto;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
@@ -79,7 +82,15 @@ public class ServletAppProduct extends HttpServlet {
     
     private void createProduct(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
-        
+        String name = request.getParameter("name");
+        BigDecimal precio = new BigDecimal(request.getParameter("price"));
+        System.out.println("numero:"+precio);
+        Producto producto = new Producto();
+        producto.setNombre(name);
+        producto.setPrecio(precio);
+        productJPA.create(producto);
+        System.out.println("cayo a insert");
+        response.sendRedirect("list");
     }
     private void readProduct(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
@@ -91,19 +102,53 @@ public class ServletAppProduct extends HttpServlet {
     
     private void updateProduct(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
-        
+        int codigo = Integer.parseInt(request.getParameter("codigo"));
+        String name = request.getParameter("name");
+        BigDecimal precio = new BigDecimal(request.getParameter("price"));
+        Producto producto = new Producto();
+        producto.setCodigo(codigo);
+        producto.setNombre(name);
+        producto.setPrecio(precio);
+        producto.setCarritoList(null);
+        System.out.println(producto.getCodigo());
+        try{
+            productJPA.edit(producto);
+        }catch(Exception e){
+            Logger.getLogger(ServletAppProduct.class.getName()).log(Level.ALL.SEVERE, null, e);
+        }
+        response.sendRedirect("list");
     }
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
-        
+        int id = Integer.parseInt(request.getParameter("codigo"));
+        try{
+            productJPA.destroy(id);
+        }catch(Exception e){
+            System.out.println("llave foranea");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
+            String mensaje = "no puedes eliminar el producto, se encuentra en uso por almenos un usuario";
+            request.setAttribute("mensaje", mensaje);
+            dispatcher.forward(request, response);
+        }
+        response.sendRedirect("list");
     }
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
-        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("form-product.jsp");
+        dispatcher.forward(request, response);
     }
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
-        
+        int codigo = Integer.parseInt(request.getParameter("codigo"));
+        Producto producto = productJPA.findProducto(codigo);
+        RequestDispatcher dispatcher = null;
+        if( producto != null){
+            dispatcher = request.getRequestDispatcher("product-form-edit.jsp");
+            request.setAttribute("producto", producto);
+        }else{
+            dispatcher = request.getRequestDispatcher("list-product.jsp");
+        }
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

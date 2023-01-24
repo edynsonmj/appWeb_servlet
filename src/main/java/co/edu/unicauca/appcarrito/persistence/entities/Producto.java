@@ -48,7 +48,7 @@ public class Producto implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "precio")
     private BigDecimal precio;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProducto")
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "idProducto")
     private List<Carrito> carritoList;
 
     public Producto() {
