@@ -32,8 +32,7 @@
                             <input type="text" class="form-control" id="floatingInput" placeholder="clave" name="pass" required="required">
                             <label for="floatingInput" class="text-dark">Clave</label>
                         </div>
-                        <select class="form-select mb-3" name="rol">
-                            <option selected>Selecciona un rol</option>
+                        <select class="form-select mb-3" name="rol" required>
                             <option value="no-admin">no-admin</option>
                             <option value="admin">admin</option>
                         </select>
