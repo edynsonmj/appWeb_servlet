@@ -6,6 +6,10 @@ package co.edu.unicauca.appcarrito.control;
 
 import co.edu.unicauca.appcarrito.persistence.jpa.ProductoJpaController;
 import co.edu.unicauca.appcarrito.persistence.entities.Producto;
+import co.edu.unicauca.appcarrito.persistence.entities.Usuario;
+import co.edu.unicauca.appcarrito.persistence.entities.Carrito;
+import co.edu.unicauca.appcarrito.persistence.jpa.CarritoJpaController;
+import co.edu.unicauca.appcarrito.persistence.jpa.UsuarioJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -29,6 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/")
 public class ServletAppProduct extends HttpServlet {
     private ProductoJpaController productJPA;
+    private UsuarioJpaController userJPA;
+    private CarritoJpaController carJPA;
     private final static String PU = "co.edu.unicauca_appCarrito_war_1.0-SNAPSHOTPU";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,6 +50,8 @@ public class ServletAppProduct extends HttpServlet {
         super.init();
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU);
         productJPA = new ProductoJpaController(emf);
+        userJPA = new UsuarioJpaController(emf);
+        carJPA = new CarritoJpaController(emf);
         List<Producto> listaProductos = productJPA.findProductoEntities();
         /*for(Producto producto: listaProductos){
             System.out.println("nombre: "+producto.getNombre()+" codigo: "+producto.getCodigo()+"  precio: "+producto.getPrecio());
@@ -55,19 +63,55 @@ public class ServletAppProduct extends HttpServlet {
         String action = request.getServletPath();
         try{
             switch(action){
-                case "/new":
+                case "/newProduct":
                     showNewForm(request, response);
                     break;
-                case "/insert":
+                case "/insertProduct":
                     createProduct(request, response);
                     break;
-                case "/delete":
+                case "/deleteProduct":
                     deleteProduct(request, response);
                     break;
-                case "/edit":
+                case "/editProduct":
                     showEditForm(request, response);
                     break;
-                case "/update":
+                case "/updateProduct":
+                    updateProduct(request, response);
+                    break;
+                case "/listUser":
+                    readUser(request, response);
+                    break;
+                case "/newUser":
+                    showNewFormUser(request, response);
+                    break;
+                case "/insertUser":
+                    createUser(request, response);
+                    break;
+                case "/deleteUser":
+                    deleteProduct(request, response);
+                    break;
+                case "/editUser":
+                    showEditForm(request, response);
+                    break;
+                case "/updateUser":
+                    updateProduct(request, response);
+                    break;
+                case "/listCar":
+                    readCar(request, response);
+                    break;
+                case "/newCar":
+                    showNewForm(request, response);
+                    break;
+                case "/insertCar":
+                    createProduct(request, response);
+                    break;
+                case "/deleteCar":
+                    deleteProduct(request, response);
+                    break;
+                case "/editCar":
+                    showEditForm(request, response);
+                    break;
+                case "/updateCar":
                     updateProduct(request, response);
                     break;
                 default:
@@ -92,6 +136,7 @@ public class ServletAppProduct extends HttpServlet {
         System.out.println("cayo a insert");
         response.sendRedirect("list");
     }
+    
     private void readProduct(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
         List<Producto> listaProductos = productJPA.findProductoEntities();
@@ -148,6 +193,86 @@ public class ServletAppProduct extends HttpServlet {
         }else{
             dispatcher = request.getRequestDispatcher("list-product.jsp");
         }
+        dispatcher.forward(request, response);
+    }
+    
+    //
+    private void createUser(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        String name = request.getParameter("name");
+        String user = request.getParameter("user");
+        String pass = request.getParameter("pass");
+        Usuario usuario = new Usuario();
+        usuario.setNombre(name);
+        usuario.setUsuario(user);
+        usuario.setClave(pass);
+        response.sendRedirect("listUser");
+    }
+    
+    private void readUser(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        List<Usuario> listaUsuarios = userJPA.findUsuarioEntities();
+        request.setAttribute("listUsuarios", listaUsuarios);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("list-usuario.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void updateUser(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        int codigo = Integer.parseInt(request.getParameter("codigo"));
+        String name = request.getParameter("name");
+        BigDecimal precio = new BigDecimal(request.getParameter("price"));
+        Producto producto = new Producto();
+        producto.setCodigo(codigo);
+        producto.setNombre(name);
+        producto.setPrecio(precio);
+        producto.setCarritoList(null);
+        System.out.println(producto.getCodigo());
+        try{
+            productJPA.edit(producto);
+        }catch(Exception e){
+            Logger.getLogger(ServletAppProduct.class.getName()).log(Level.ALL.SEVERE, null, e);
+        }
+        response.sendRedirect("list");
+    }
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        int id = Integer.parseInt(request.getParameter("codigo"));
+        try{
+            productJPA.destroy(id);
+        }catch(Exception e){
+            System.out.println("llave foranea");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
+            String mensaje = "no puedes eliminar el producto, se encuentra en uso por almenos un usuario";
+            request.setAttribute("mensaje", mensaje);
+            dispatcher.forward(request, response);
+        }
+        response.sendRedirect("list");
+    }
+    private void showNewFormUser(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        RequestDispatcher dispatcher = request.getRequestDispatcher("form-user.jsp");
+        dispatcher.forward(request, response);
+    }
+    private void showEditFormUser(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        int codigo = Integer.parseInt(request.getParameter("codigo"));
+        Producto producto = productJPA.findProducto(codigo);
+        RequestDispatcher dispatcher = null;
+        if( producto != null){
+            dispatcher = request.getRequestDispatcher("product-form-edit.jsp");
+            request.setAttribute("producto", producto);
+        }else{
+            dispatcher = request.getRequestDispatcher("list-product.jsp");
+        }
+        dispatcher.forward(request, response);
+    }
+    
+    private void readCar(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+        List<Carrito> listaCarrito = carJPA.findCarritoEntities();
+        request.setAttribute("listCar", listaCarrito);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("list-carrito.jsp");
         dispatcher.forward(request, response);
     }
 

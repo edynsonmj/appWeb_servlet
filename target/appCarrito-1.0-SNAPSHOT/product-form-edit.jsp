@@ -19,7 +19,7 @@
                     <h5>Editar producto</h5>
                 </div>
                 <div class="card-body">
-                    <form action="<%=request.getContextPath()%>/update" method="post">
+                    <form action="<%=request.getContextPath()%>/updateProduct" method="post">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="floatingInput" placeholder="codigo" name="codigo" required="required" value="${producto.codigo}" readonly="true">
                             <label for="floatingInput" class="text-dark">Codigo</label>

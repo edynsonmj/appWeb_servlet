@@ -19,7 +19,7 @@
                     <h5>Nuevo producto</h5>
                 </div>
                 <div class="card-body">
-                    <form action="<%=request.getContextPath()%>/insert" method="post">
+                    <form action="<%=request.getContextPath()%>/insertProduct" method="post">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInput" placeholder="nombre" name="name" required="required">
                         <label for="floatingInput" class="text-dark">Nombre</label>

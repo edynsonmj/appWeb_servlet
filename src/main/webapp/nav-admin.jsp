@@ -27,10 +27,10 @@
                             <a class="nav-link" aria-current="page" href="<%=request.getContextPath()%>/">Productos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Usuarios</a>
+                            <a class="nav-link" href="<%=request.getContextPath()%>/listUser">Usuarios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" >Carrito</a>
+                            <a class="nav-link" href="<%=request.getContextPath()%>/listCar">Carrito</a>
                         </li>
                     </ul>
                 </div>

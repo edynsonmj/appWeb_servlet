@@ -19,7 +19,7 @@
         <!--barra de navegacion fin-->
         <div class="container mt-3">
             <h4 class="text-center">Catalogo de productos</h4>
-            <a href="<%=request.getContextPath()%>/new" class="btn btn-outline-dark">Nuevo producto</a>
+            <a href="<%=request.getContextPath()%>/newProduct" class="btn btn-outline-dark">Nuevo producto</a>
             <table class="table table-sm table-dark table-striped table-hover mt-1">
                 <thead>
                 <th>codigo</th>
@@ -42,8 +42,8 @@
                                 <c:out value="${producto.precio}" />
                             </td>
                             <td>
-                                <a href="edit?codigo=<c:out value='${producto.codigo}'/>" class="btn btn-outline-success">Editar</a>
-                                <a href="delete?codigo=<c:out value='${producto.codigo}' />" class="btn btn-outline-danger">Eliminar</a>
+                                <a href="editProduct?codigo=<c:out value='${producto.codigo}'/>" class="btn btn-outline-success">Editar</a>
+                                <a href="deleteProduct?codigo=<c:out value='${producto.codigo}' />" class="btn btn-outline-danger">Eliminar</a>
                             </td>
                         </tr> 
                     </c:forEach>
